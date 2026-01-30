@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export default function POST(){
+export async function POST(){
     const response = NextResponse.json({message: "Logged out successfully"});
 
     // Clear the cookie by setting it's expiration to the past
