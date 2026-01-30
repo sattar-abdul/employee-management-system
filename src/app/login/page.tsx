@@ -42,9 +42,10 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
       <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-md">
-        <h1 className="text-2xl font-bold text-center text-gray-800">
-          Employee Login
-        </h1>
+        <h1 className="text-2xl font-bold text-center text-gray-800">Login</h1>
+        <p className="text-l text-center text-gray-800">
+          Please Login to access the system
+        </p>
 
         {error && (
           <div className="p-3 text-sm text-red-600 bg-red-100 rounded-lg">

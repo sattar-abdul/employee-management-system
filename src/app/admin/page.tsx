@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import LogoutButton from "@/components/LogoutButton";
 
 export default function AdminDashboard() {
   const [users, setUsers] = useState([]);
@@ -104,7 +105,13 @@ export default function AdminDashboard() {
 
   return (
     <div className="p-8 bg-gray-50 min-h-screen">
-      <h1 className="text-3xl font-bold mb-6 text-gray-800">Admin Panel {currentUser.role === "superadmin"? "(super admin)":""}</h1>
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold mr-8 text-gray-800">
+          Admin Panel {currentUser.role === "superadmin" ? "(super admin)" : ""}
+        </h1>
+        {/* Logout button */}
+          <LogoutButton />
+      </div>
 
       {/* FEEDBACK MESSAGES (error/success) */}
       {error && (
@@ -197,75 +204,78 @@ export default function AdminDashboard() {
           </thead>
           <tbody>
             {users.length > 0 ? (
-              users.map((u: any) => ( u.status === "active" &&
-                <tr key={u._id} className="border-t hover:bg-gray-50">
-                  <td className="p-4 text-gray-800">{u.email}</td>
-                  <td className="p-4">
-                    <span
-                      className={`px-2 py-1 text-xs font-bold rounded ${
-                        u.role === "admin" || u.role === "superadmin"
-                          ? "bg-purple-100 text-purple-700"
-                          : "bg-gray-100 text-gray-700"
-                      }`}
-                    >
-                      {u.role.toUpperCase()}
-                    </span>
-                  </td>
-
-                  <td className={`p-4 text-green-700`}>{u.status}</td>
-
-                  <td className="p-4">
-                    {/* Check if the user viewing the page is a Super Admin */}
-                    {JSON.parse(localStorage.getItem("user") || "{}").role ===
-                    "superadmin" ? (
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="number"
-                          className="border border-gray-300 w-20 p-1 rounded focus:ring-2 focus:ring-blue-500 outline-none text-gray-800"
-                          defaultValue={u.leaveQuota}
-                          onBlur={(e) =>
-                            handleUpdateQuota(u._id, e.target.value)
-                          }
-                        />
-                        <span className="text-gray-500 text-sm">days</span>
-                      </div>
-                    ) : (
-                      <span className="text-gray-700 font-medium">
-                        {u.leaveQuota} days
-                      </span>
-                    )}
-                  </td>
-
-                  <td className="p-4">
-                    <div className="flex gap-2">
-                      {/* Soft Delete Button */}
-                      {u.role !== "superadmin" && (
-                        <button
-                          onClick={() =>
-                            handleUpdateUser(u._id, { status: "inactive" })
-                          }
-                          className="text-xs bg-red-100 text-red-600 px-2 py-1 rounded hover:bg-red-200"
+              users.map(
+                (u: any) =>
+                  u.status === "active" && (
+                    <tr key={u._id} className="border-t hover:bg-gray-50">
+                      <td className="p-4 text-gray-800">{u.email}</td>
+                      <td className="p-4">
+                        <span
+                          className={`px-2 py-1 text-xs font-bold rounded ${
+                            u.role === "admin" || u.role === "superadmin"
+                              ? "bg-purple-100 text-purple-700"
+                              : "bg-gray-100 text-gray-700"
+                          }`}
                         >
-                          Soft delete
-                        </button>
-                      )}
+                          {u.role.toUpperCase()}
+                        </span>
+                      </td>
 
-                      {/* Change Role Button (Only visible to superadmin */}
-                      {currentUser.role == "superadmin" &&
-                        u.role === "user" && (
-                          <button
-                            onClick={() =>
-                              handleUpdateUser(u._id, { role: "admin" })
-                            }
-                            className="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded hover:bg-blue-200"
-                          >
-                            Make Admin
-                          </button>
+                      <td className={`p-4 text-green-700`}>{u.status}</td>
+
+                      <td className="p-4">
+                        {/* Check if the user viewing the page is a Super Admin */}
+                        {JSON.parse(localStorage.getItem("user") || "{}")
+                          .role === "superadmin" ? (
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="number"
+                              className="border border-gray-300 w-20 p-1 rounded focus:ring-2 focus:ring-blue-500 outline-none text-gray-800"
+                              defaultValue={u.leaveQuota}
+                              onBlur={(e) =>
+                                handleUpdateQuota(u._id, e.target.value)
+                              }
+                            />
+                            <span className="text-gray-500 text-sm">days</span>
+                          </div>
+                        ) : (
+                          <span className="text-gray-700 font-medium">
+                            {u.leaveQuota} days
+                          </span>
                         )}
-                    </div>
-                  </td>
-                </tr>
-              ))
+                      </td>
+
+                      <td className="p-4">
+                        <div className="flex gap-2">
+                          {/* Soft Delete Button */}
+                          {u.role !== "superadmin" && (
+                            <button
+                              onClick={() =>
+                                handleUpdateUser(u._id, { status: "inactive" })
+                              }
+                              className="text-xs bg-red-100 text-red-600 px-2 py-1 rounded hover:bg-red-200"
+                            >
+                              Soft delete
+                            </button>
+                          )}
+
+                          {/* Change Role Button (Only visible to superadmin */}
+                          {currentUser.role == "superadmin" &&
+                            u.role === "user" && (
+                              <button
+                                onClick={() =>
+                                  handleUpdateUser(u._id, { role: "admin" })
+                                }
+                                className="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded hover:bg-blue-200"
+                              >
+                                Make Admin
+                              </button>
+                            )}
+                        </div>
+                      </td>
+                    </tr>
+                  )
+              )
             ) : (
               <tr>
                 <td colSpan={3} className="p-4 text-center text-gray-500">
@@ -296,62 +306,65 @@ export default function AdminDashboard() {
           </thead>
           <tbody>
             {users.length > 0 ? (
-              users.map((u: any) => ( u.status === "inactive" &&
-                <tr key={u._id} className="border-t hover:bg-gray-50">
-                  <td className="p-4 text-gray-800">{u.email}</td>
-                  <td className="p-4">
-                    <span
-                      className={`px-2 py-1 text-xs font-bold rounded ${
-                        u.role === "admin" || u.role === "superadmin"
-                          ? "bg-purple-100 text-purple-700"
-                          : "bg-gray-100 text-gray-700"
-                      }`}
-                    >
-                      {u.role.toUpperCase()}
-                    </span>
-                  </td>
-
-                  <td className={`p-4 text-red-800`}>{u.status}</td>
-
-                  <td className="p-4">
-                    {/* Check if the user viewing the page is a Super Admin */}
-                    {JSON.parse(localStorage.getItem("user") || "{}").role ===
-                    "superadmin" ? (
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="number"
-                          className="border border-gray-300 w-20 p-1 rounded focus:ring-2 focus:ring-blue-500 outline-none text-gray-800"
-                          defaultValue={u.leaveQuota}
-                          onBlur={(e) =>
-                            handleUpdateQuota(u._id, e.target.value)
-                          }
-                        />
-                        <span className="text-gray-500 text-sm">days</span>
-                      </div>
-                    ) : (
-                      <span className="text-gray-700 font-medium">
-                        {u.leaveQuota} days
-                      </span>
-                    )}
-                  </td>
-
-                  <td className="p-4">
-                    <div className="flex gap-2">
-                      {/* Soft Delete Button */}
-                      {u.role !== "superadmin" && (
-                        <button
-                          onClick={() =>
-                            handleUpdateUser(u._id, { status: "active" })
-                          }
-                          className="text-xs bg-green-100 text-green-600 px-2 py-1 rounded hover:bg-green-200"
+              users.map(
+                (u: any) =>
+                  u.status === "inactive" && (
+                    <tr key={u._id} className="border-t hover:bg-gray-50">
+                      <td className="p-4 text-gray-800">{u.email}</td>
+                      <td className="p-4">
+                        <span
+                          className={`px-2 py-1 text-xs font-bold rounded ${
+                            u.role === "admin" || u.role === "superadmin"
+                              ? "bg-purple-100 text-purple-700"
+                              : "bg-gray-100 text-gray-700"
+                          }`}
                         >
-                          Re-Activate
-                        </button>
-                      )}
-                    </div>
-                  </td>
-                </tr>
-              ))
+                          {u.role.toUpperCase()}
+                        </span>
+                      </td>
+
+                      <td className={`p-4 text-red-800`}>{u.status}</td>
+
+                      <td className="p-4">
+                        {/* Check if the user viewing the page is a Super Admin */}
+                        {JSON.parse(localStorage.getItem("user") || "{}")
+                          .role === "superadmin" ? (
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="number"
+                              className="border border-gray-300 w-20 p-1 rounded focus:ring-2 focus:ring-blue-500 outline-none text-gray-800"
+                              defaultValue={u.leaveQuota}
+                              onBlur={(e) =>
+                                handleUpdateQuota(u._id, e.target.value)
+                              }
+                            />
+                            <span className="text-gray-500 text-sm">days</span>
+                          </div>
+                        ) : (
+                          <span className="text-gray-700 font-medium">
+                            {u.leaveQuota} days
+                          </span>
+                        )}
+                      </td>
+
+                      <td className="p-4">
+                        <div className="flex gap-2">
+                          {/* Soft Delete Button */}
+                          {u.role !== "superadmin" && (
+                            <button
+                              onClick={() =>
+                                handleUpdateUser(u._id, { status: "active" })
+                              }
+                              className="text-xs bg-green-100 text-green-600 px-2 py-1 rounded hover:bg-green-200"
+                            >
+                              Re-Activate
+                            </button>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  )
+              )
             ) : (
               <tr>
                 <td colSpan={3} className="p-4 text-center text-gray-500">

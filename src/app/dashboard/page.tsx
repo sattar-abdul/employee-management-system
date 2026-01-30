@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import LogoutButton from "@/components/LogoutButton";
 
 export default function UserDashboard() {
   const [user, setUser] = useState<any>(null);
@@ -30,13 +31,16 @@ export default function UserDashboard() {
     <div className="p-8 bg-gray-50 min-h-screen">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold text-gray-800">Employee Dashboard</h1>
-        <div className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow">
+        {/* Logout button */}
+        <LogoutButton />
+      </div>
+
+      <div className="bg-blue-600 text-white px-4 py-2 mb-2 rounded-lg shadow">
           Quota:{" "}
           <span className="font-bold">
             {user.leaveQuota - user.leavesTaken} days remaining
           </span>
         </div>
-      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* UPCOMING LEAVES SECTION */}
@@ -79,7 +83,7 @@ export default function UserDashboard() {
                       : "bg-gray-100 text-gray-700"
                   }`}
                 >
-                  {member.role.toUpperCase()}   
+                  {member.role.toUpperCase()}
                 </span>
               </div>
             ))}
