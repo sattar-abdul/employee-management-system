@@ -1,4 +1,5 @@
 "use client";
+import LogoutButton from "@/components/LogoutButton";
 import { useEffect, useState } from "react";
 
 export default function AdminLeaves() {
@@ -25,7 +26,11 @@ export default function AdminLeaves() {
 
   return (
     <div className="p-8 bg-gray-50 min-h-screen">
-      <h1 className="text-2xl font-bold mb-6 text-gray-800">Leave Requests</h1>
+      <div className="flex justify-between items-center mb-8">
+      <h1 className="text-3xl font-bold mb-2 text-gray-800">Leave Requests</h1>
+      {/* Logout button */}
+      <LogoutButton />
+      </div>
       <div className="bg-white shadow rounded-lg overflow-hidden">
         <table className="w-full text-left text-gray-600">
           <thead className="bg-gray-100">
