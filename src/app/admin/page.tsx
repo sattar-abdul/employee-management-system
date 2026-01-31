@@ -7,7 +7,7 @@ export default function AdminDashboard() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("user");
-  const currentUser = JSON.parse(localStorage.getItem("user") || "{}");
+  const [currentUser, setCurrentUser] = useState<any>(null);
 
   // Status messages
   const [error, setError] = useState("");
@@ -25,6 +25,11 @@ export default function AdminDashboard() {
   };
 
   useEffect(() => {
+    // 1. Safe access to localStorage after mount
+    const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+    setCurrentUser(storedUser);
+
+    // 2. Fetch users
     fetchUsers();
   }, []);
 
@@ -110,7 +115,7 @@ export default function AdminDashboard() {
           Admin Panel {currentUser.role === "superadmin" ? "(super admin)" : ""}
         </h1>
         {/* Logout button */}
-          <LogoutButton />
+        <LogoutButton />
       </div>
 
       {/* FEEDBACK MESSAGES (error/success) */}
