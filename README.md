@@ -76,4 +76,3 @@ npm run dev
 In this assessment, I prioritized code reliability. I added error handling for duplicate users, handled edge cases for date selections, and ensured that the role-based restrictions are enforced both on the Frontend (UI visibility) and the Backend (API security).
 
 Looking forward to work with the real version of this project at IITD-AIA Foundation for Smart Manufacturing.
-

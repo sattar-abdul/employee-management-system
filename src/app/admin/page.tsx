@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import LogoutButton from "@/components/LogoutButton";
+import Link from "next/link";
 
 export default function AdminDashboard() {
   const [users, setUsers] = useState([]);
@@ -114,9 +115,20 @@ export default function AdminDashboard() {
         <h1 className="text-3xl font-bold mr-8 text-gray-800">
           Admin Panel {currentUser.role === "superadmin" ? "(super admin)" : ""}
         </h1>
+
         {/* Logout button */}
         <LogoutButton />
       </div>
+
+      {/* Leave Request button */}
+      <div className="mb-4">
+        <Link
+          href="/admin/leaves"
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+        >
+          <button> Leave Requests </button>
+        </Link>
+        </div>
 
       {/* FEEDBACK MESSAGES (error/success) */}
       {error && (
